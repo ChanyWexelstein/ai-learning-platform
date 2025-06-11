@@ -1,14 +1,23 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../services/api';
 
 function Register() {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await registerUser({ name, phone });
-    // מעבר ל-dashboard בהמשך
+    try {
+      const res = await registerUser({ name, phone });
+      const user = res.data;
+      localStorage.setItem('user', JSON.stringify(user));
+      navigate('/dashboard');
+    } catch (error) {
+      alert('Registration failed');
+      console.error(error);
+    }
   };
 
   return (
@@ -18,7 +27,7 @@ function Register() {
         placeholder="Name"
         value={name}
         onChange={(e) => setName(e.target.value)}
-        className="border w-full px-3 py-2 rounded"
+        className="w-full border px-3 py-2 rounded"
         required
       />
       <input
@@ -26,10 +35,15 @@ function Register() {
         placeholder="Phone"
         value={phone}
         onChange={(e) => setPhone(e.target.value)}
-        className="border w-full px-3 py-2 rounded"
+        className="w-full border px-3 py-2 rounded"
         required
       />
-      <button type="submit" className="bg-blue-600 text-white py-2 w-full rounded">Register</button>
+      <button
+        type="submit"
+        className="w-full bg-blue-600 text-white py-2 rounded"
+      >
+        Register
+      </button>
     </form>
   );
 }

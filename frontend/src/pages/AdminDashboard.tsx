@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetchAllUsers, fetchAllPrompts } from '../services/api'; // ✅ שמות מעודכנים
+import { fetchAllUsers, fetchAllPrompts } from '../services/api'; 
 
 interface User {
   id: string;
