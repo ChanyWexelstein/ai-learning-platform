@@ -1,34 +1,37 @@
 import axios from 'axios';
 
-const API = axios.create({
+const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api',
 });
 
-// Register a new user
-export const registerUser = (data: { name: string; phone: string }) =>
-  API.post('/auth/register', data);
+// User registration
+export const registerUser = async (data: { name: string; phone: string }) =>
+  apiClient.post('/auth/register', data);
 
-// Get all categories
-export const getCategories = () => API.get('/categories');
+// Fetch all categories
+export const fetchCategories = async () =>
+  apiClient.get('/categories');
 
-// Get sub-categories by category ID
-export const getSubCategories = (categoryId: string) =>
-  API.get(`/subCategories/byCategory/${categoryId}`);
+// Fetch sub-categories for a given category
+export const fetchSubCategories = async (categoryId: string) =>
+  apiClient.get(`/subCategories/byCategory/${categoryId}`);
 
-// Send a prompt to the AI
-export const sendPrompt = (data: {
+// Submit a prompt and get AI-generated response
+export const submitPrompt = async (data: {
   userId: string;
   categoryId: string;
   subCategoryId: string;
   prompt: string;
-}) => API.post('/prompts/ask', data);
+}) => apiClient.post('/prompts/ask', data);
 
-// Get prompt history by user ID
-export const getUserPrompts = (userId: string) =>
-  API.get(`/prompts/byUser/${userId}`);
+// Get prompt history for a specific user
+export const fetchUserPrompts = async (userId: string) =>
+  apiClient.get(`/prompts/byUser/${userId}`);
 
 // Get all users (for admin)
-export const getAllUsers = () => API.get('/users');
+export const fetchAllUsers = async () =>
+  apiClient.get('/users');
 
 // Get all prompts (for admin)
-export const getAllPrompts = () => API.get('/prompts');
+export const fetchAllPrompts = async () =>
+  apiClient.get('/prompts');

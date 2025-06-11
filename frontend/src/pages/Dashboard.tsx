@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import {
-  getCategories,
-  getSubCategories,
-  sendPrompt
+  fetchCategories,
+  fetchSubCategories,
+  submitPrompt
 } from '../services/api';
 import HistoryList from '../components/HistoryList';
 
@@ -27,12 +27,12 @@ function Dashboard() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getCategories().then(res => setCategories(res.data));
+    fetchCategories().then(res => setCategories(res.data));
   }, []);
 
   useEffect(() => {
     if (categoryId) {
-      getSubCategories(categoryId).then(res => setSubCategories(res.data));
+      fetchSubCategories(categoryId).then(res => setSubCategories(res.data));
     } else {
       setSubCategories([]);
     }
@@ -43,8 +43,8 @@ function Dashboard() {
     setLoading(true);
     setResponse('');
     try {
-      const res = await sendPrompt({
-        userId: '1', // later: real user ID
+      const res = await submitPrompt({
+        userId: '1',
         categoryId,
         subCategoryId,
         prompt
@@ -110,7 +110,6 @@ function Dashboard() {
         </div>
       )}
 
-      {/* History list */}
       <HistoryList userId="1" />
     </div>
   );
