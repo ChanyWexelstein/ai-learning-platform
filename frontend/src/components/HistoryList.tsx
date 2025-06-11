@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { fetchUserPrompts } from '../services/api';
+import { useUserId } from '../hooks/useUserId'; 
 
 interface PromptEntry {
   id: string;
@@ -8,13 +9,16 @@ interface PromptEntry {
   created_at: string;
 }
 
-function HistoryList({ userId }: { userId: string }) {
+function HistoryList({ userId }: { userId?: string }) {
+  const userIdFromHook = useUserId();
+  const finalUserId = userId || userIdFromHook;
+
   const [history, setHistory] = useState<PromptEntry[]>([]);
 
   useEffect(() => {
-    if (!userId) return;
-    fetchUserPrompts(userId).then((res) => setHistory(res.data));
-  }, [userId]);
+    if (!finalUserId) return;
+    fetchUserPrompts(finalUserId).then((res) => setHistory(res.data));
+  }, [finalUserId]);
 
   if (!history.length) return null;
 
