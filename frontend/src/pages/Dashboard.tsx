@@ -26,6 +26,9 @@ function Dashboard() {
   const [response, setResponse] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const userId = user?.id;
+
   useEffect(() => {
     fetchCategories().then(res => setCategories(res.data));
   }, []);
@@ -44,7 +47,7 @@ function Dashboard() {
     setResponse('');
     try {
       const res = await submitPrompt({
-        userId: '1',
+        userId,
         categoryId,
         subCategoryId,
         prompt
@@ -110,7 +113,7 @@ function Dashboard() {
         </div>
       )}
 
-      <HistoryList userId="1" />
+      <HistoryList userId={userId} />
     </div>
   );
 }

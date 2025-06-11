@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fetchUserPrompts } from '../services/api'; // ✅ השם החדש
+import { fetchUserPrompts } from '../services/api';
 
 interface PromptEntry {
   id: string;
@@ -12,6 +12,7 @@ function HistoryList({ userId }: { userId: string }) {
   const [history, setHistory] = useState<PromptEntry[]>([]);
 
   useEffect(() => {
+    if (!userId) return;
     fetchUserPrompts(userId).then((res) => setHistory(res.data));
   }, [userId]);
 
