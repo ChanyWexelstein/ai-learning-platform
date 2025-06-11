@@ -5,7 +5,7 @@ const apiClient = axios.create({
 });
 
 // User registration
-export const registerUser = async (data: { name: string; phone: string }) =>
+export const registerUser = async (data: { name: string; password: string }) =>
   apiClient.post('/auth/register', data);
 
 // Fetch all categories
