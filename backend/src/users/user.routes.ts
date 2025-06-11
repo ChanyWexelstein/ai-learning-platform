@@ -1,28 +1,29 @@
 import { Router } from 'express';
-import { UserController } from './user.controller';
+import {
+  getAllUsers,
+  getUserById,
+  createUser,
+  updateUser,
+  deleteUser
+} from './user.controller';
 
 const router = Router();
-const userController = new UserController();
 
 // POST /api/users - Create new user
-router.post('/', userController.createUser);
-
-// POST /api/users/login - Login or create user
-router.post('/login', userController.loginOrGetUser);
+router.post('/', createUser);
 
 // GET /api/users - Get all users
-router.get('/', userController.getAllUsers);
+router.get('/', getAllUsers);
 
 // GET /api/users/:id - Get user by ID
-router.get('/:id', userController.getUserById);
+router.get('/:id', getUserById);
 
 // PUT /api/users/:id - Update user
-router.put('/:id', userController.updateUser);
+router.put('/:id', updateUser);
 
 // DELETE /api/users/:id - Delete user
-router.delete('/:id', userController.deleteUser);
+router.delete('/:id', deleteUser);
 
-// GET /api/users/:id/history - Get user with learning history
-router.get('/:id/history', userController.getUserWithHistory);
+// (אם תוסיפי בעתיד login או history, תכתבי גם את ה־controller המתאים)
 
 export default router;

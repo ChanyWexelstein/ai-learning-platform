@@ -3,7 +3,7 @@ import * as promptService from './prompt.service';
 
 export const getAllPrompts = async (_req: Request, res: Response) => {
   const prompts = await promptService.getAllPrompts();
-  res.json(prompts);
+  return res.json(prompts);
 };
 
 export const getPromptsByUser = async (req: Request, res: Response) => {
@@ -14,7 +14,7 @@ export const getPromptsByUser = async (req: Request, res: Response) => {
   if (isNaN(userId)) return res.status(400).json({ error: 'Invalid userId param' });
 
   const prompts = await promptService.getPromptsByUser(userId);
-  res.json(prompts);
+  return res.json(prompts);
 };
 
 export const createPrompt = async (req: Request, res: Response) => {
@@ -28,5 +28,5 @@ export const createPrompt = async (req: Request, res: Response) => {
     response
   );
 
-  res.status(201).json(newPrompt);
+  return res.status(201).json(newPrompt);
 };

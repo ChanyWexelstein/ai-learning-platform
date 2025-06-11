@@ -1,17 +1,15 @@
-import { Configuration, OpenAIApi } from "openai";
+import OpenAI from 'openai';
 
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
 });
 
-const openai = new OpenAIApi(configuration);
-
 export async function askOpenAI(prompt: string): Promise<string> {
-  const response = await openai.createCompletion({
-    model: "text-davinci-003",
-    prompt,
+  const completion = await openai.chat.completions.create({
+    model: "gpt-3.5-turbo",
+    messages: [{ role: "user", content: prompt }],
     max_tokens: 500,
   });
 
-  return response.data.choices[0].text.trim();
+return completion.choices[0]?.message?.content || '';
 }
