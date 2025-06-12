@@ -9,10 +9,10 @@ interface User {
 
 interface Prompt {
   id: string;
-  user_id: string;
+  userId: string;
   prompt: string;
   response: string;
-  created_at: string;
+  createdAt: string;
 }
 
 function AdminDashboard() {
@@ -25,7 +25,7 @@ function AdminDashboard() {
   }, []);
 
   const getUserPrompts = (userId: string) =>
-    prompts.filter(p => p.user_id === userId);
+    prompts.filter(p => p.userId === userId);
 
   return (
     <div className="p-6">
@@ -42,7 +42,7 @@ function AdminDashboard() {
                 <p><strong>Prompt:</strong> {p.prompt}</p>
                 <p><strong>Response:</strong> {p.response}</p>
                 <p className="text-sm text-gray-500">
-                  {new Date(p.created_at).toLocaleString()}
+                  {new Date(p.createdAt).toLocaleString()}
                 </p>
               </li>
             ))}

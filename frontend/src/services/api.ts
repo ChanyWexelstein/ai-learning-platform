@@ -8,6 +8,9 @@ const apiClient = axios.create({
 export const registerUser = async (data: { name: string; phone: string; password: string }) =>
   apiClient.post('/auth/register', data);
 
+export const loginUser = async (data: { name: string; password: string }) =>
+  apiClient.post('/auth/login', data);
+
 // Fetch all categories
 export const fetchCategories = async () =>
   apiClient.get('/categories');
