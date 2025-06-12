@@ -20,13 +20,13 @@ export const getPromptsByUser = async (req: Request, res: Response) => {
 export const createPrompt = async (req: Request, res: Response) => {
   const { userId, categoryId, subCategoryId, prompt, response } = req.body;
 
-  const newPrompt = await promptService.createPrompt(
-    userId,
-    categoryId,
-    subCategoryId,
+  const newPrompt = await promptService.runPrompt(
+    Number(userId),
+    Number(categoryId),
+    Number(subCategoryId),
     prompt,
-    response
   );
+  
 
   return res.status(201).json(newPrompt);
 };

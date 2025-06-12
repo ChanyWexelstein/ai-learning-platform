@@ -22,7 +22,9 @@ export const submitPrompt = async (data: {
   categoryId: string;
   subCategoryId: string;
   prompt: string;
-}) => apiClient.post('/prompts/ask', data);
+}) => {
+  return apiClient.post('/prompts', data)
+};
 
 // Get prompt history for a specific user
 export const fetchUserPrompts = async (userId: string) =>

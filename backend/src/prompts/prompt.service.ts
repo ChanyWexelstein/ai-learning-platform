@@ -1,4 +1,5 @@
 import prisma from '../config/db';
+import { askOpenAI } from './openai.service';
 
 export const getAllPrompts = () => {
   return prisma.prompt.findMany();
@@ -10,13 +11,17 @@ export const getPromptsByUser = (userId: number) => {
   });
 };
 
-export const createPrompt = (
+export const runPrompt = async (
   userId: number,
   categoryId: number,
   subCategoryId: number,
   prompt: string,
-  response: string
 ) => {
+  if(!prompt){
+    console.log('prompt is empty ????');
+    return;
+  }
+  const response = await askOpenAI(prompt);
   return prisma.prompt.create({
     data: {
       userId,
