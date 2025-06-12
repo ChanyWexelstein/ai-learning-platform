@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import * as userService from './user.service';
 import { asyncHandler } from '../middlewares/errorHandler';
+import prisma from '../config/db';
 
 export const getAllUsers = asyncHandler(async (_req: Request, res: Response) => {
   const users = await userService.getAllUsers();
@@ -40,3 +41,15 @@ export const deleteUser = asyncHandler(async (req: Request, res: Response) => {
   await userService.deleteUser(userId);
   return res.status(204).send();
 });
+
+export const getAllUsersWithPrompts = async (req: Request, res: Response) => {
+  try {
+    const users = await prisma.user.findMany({
+      include: { prompts: true },
+    });
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch users' });
+  }
+};
+

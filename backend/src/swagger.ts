@@ -14,8 +14,16 @@ const swaggerDocument = {
       description: 'Local development server'
     }
   ],
+  components: {
+    securitySchemes: {
+      bearerAuth: {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT'
+      }
+    }
+  },
   paths: {
-    // Auth
     '/api/auth/register': {
       post: {
         summary: 'Register a new user',
@@ -65,8 +73,49 @@ const swaggerDocument = {
         }
       }
     },
-
-    // Users
+    '/api/admin/users': {
+      get: {
+        summary: 'Get all users (ADMIN only)',
+        security: [
+          {
+            bearerAuth: []
+          }
+        ],
+        responses: {
+          '200': {
+            description: 'List of all users with prompts',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      id: { type: 'number' },
+                      name: { type: 'string' },
+                      phone: { type: 'string' },
+                      role: { type: 'string' },
+                      prompts: {
+                        type: 'array',
+                        items: {
+                          type: 'object',
+                          properties: {
+                            id: { type: 'number' },
+                            prompt: { type: 'string' },
+                            response: { type: 'string' }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          '403': { description: 'Unauthorized - Admins only' }
+        }
+      }
+    },
     '/api/users': {
       get: { summary: 'Get all users', responses: { '200': { description: 'Success' } } },
       post: {
@@ -107,8 +156,6 @@ const swaggerDocument = {
         responses: { '204': { description: 'Deleted' } }
       }
     },
-
-    // Categories
     '/api/categories': {
       get: { summary: 'Get all categories', responses: { '200': { description: 'Success' } } },
       post: {
@@ -128,8 +175,6 @@ const swaggerDocument = {
         responses: { '201': { description: 'Category created' } }
       }
     },
-
-    // SubCategories
     '/api/sub-categories': {
       get: { summary: 'Get all sub-categories', responses: { '200': { description: 'Success' } } },
       post: {
@@ -152,7 +197,6 @@ const swaggerDocument = {
         responses: { '201': { description: 'Sub-category created' } }
       }
     },
-
     '/api/sub-categories/byCategory/{categoryId}': {
       get: {
         tags: ['SubCategory'],
@@ -187,8 +231,6 @@ const swaggerDocument = {
         }
       }
     },
-
-    // Prompts
     '/api/prompts': {
       get: { summary: 'Get all prompts', responses: { '200': { description: 'Success' } } },
       post: {

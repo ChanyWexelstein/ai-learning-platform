@@ -1,29 +1,17 @@
 import { Router } from 'express';
-import {
-  getAllUsers,
-  getUserById,
-  createUser,
-  updateUser,
-  deleteUser
-} from './user.controller';
+import { requireAdmin, authenticate } from '../middlewares/auth.middleware';
+import * as userController from './user.controller';
 
 const router = Router();
 
-// POST /api/users - Create new user
-router.post('/', createUser);
+router.post('/', userController.createUser);
 
-// GET /api/users - Get all users
-router.get('/', getAllUsers);
+router.get('/', authenticate, userController.getAllUsers);
 
-// GET /api/users/:id - Get user by ID
-router.get('/:id', getUserById);
+router.get('/:id', authenticate, userController.getUserById);
 
-// PUT /api/users/:id - Update user
-router.put('/:id', updateUser);
+router.put('/:id', authenticate, userController.updateUser);
 
-// DELETE /api/users/:id - Delete user
-router.delete('/:id', deleteUser);
-
-// (אם תוסיפי בעתיד login או history, תכתבי גם את ה־controller המתאים)
+router.delete('/:id', authenticate, userController.deleteUser);
 
 export default router;
