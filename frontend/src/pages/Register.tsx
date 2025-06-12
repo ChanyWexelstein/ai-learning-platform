@@ -5,12 +5,13 @@ import { registerUser } from '../services/api';
 function Register() {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await registerUser({ name, phone });
+      const res = await registerUser({ name, phone, password });
       const user = res.data;
       localStorage.setItem('user', JSON.stringify(user));
       navigate('/dashboard');
@@ -35,6 +36,14 @@ function Register() {
         placeholder="Phone"
         value={phone}
         onChange={(e) => setPhone(e.target.value)}
+        className="w-full border px-3 py-2 rounded"
+        required
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
         className="w-full border px-3 py-2 rounded"
         required
       />
