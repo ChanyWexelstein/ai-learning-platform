@@ -9,3 +9,9 @@ export const createCategory = (name: string) => {
     data: { name }
   });
 };
+
+export const getCategoryById = async (categoryId: number) => {
+  return prisma.category.findFirst({
+    where: { id: categoryId },
+  });
+};

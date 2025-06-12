@@ -15,3 +15,9 @@ export const createSubCategory = (name: string, categoryId: number) => {
     data: { name, categoryId }
   });
 };
+
+export const getSubCategoryById = async (subCategoryId: number) => {
+  return prisma.subCategory.findFirst({
+    where: { id: subCategoryId },
+  });
+};
