@@ -10,7 +10,7 @@ interface Category {
 interface SubCategory {
   id: string;
   name: string;
-  category_id: string;
+  categoryId: string;
 }
 
 function PromptForm({ onResponse }: { onResponse: (res: string) => void }) {
@@ -28,7 +28,10 @@ function PromptForm({ onResponse }: { onResponse: (res: string) => void }) {
 
   useEffect(() => {
     if (categoryId) {
-      fetchSubCategories(categoryId).then(res => setSubCategories(res.data));
+      fetchSubCategories(categoryId).then(res => {
+        console.log('Fetched subCategories:', res.data); // ✅ לבדיקה
+        setSubCategories(res.data);
+      });
     } else {
       setSubCategories([]);
     }
@@ -56,19 +59,44 @@ function PromptForm({ onResponse }: { onResponse: (res: string) => void }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <select value={categoryId} onChange={(e) => setCategoryId(e.target.value)} className="w-full border p-2 rounded" required>
+      <select
+        value={categoryId}
+        onChange={(e) => setCategoryId(e.target.value)}
+        className="w-full border p-2 rounded"
+        required
+      >
         <option value="">Select Category</option>
-        {categories.map(cat => <option key={cat.id} value={cat.id}>{cat.name}</option>)}
+        {categories.map(cat => (
+          <option key={cat.id} value={cat.id}>{cat.name}</option>
+        ))}
       </select>
 
-      <select value={subCategoryId} onChange={(e) => setSubCategoryId(e.target.value)} className="w-full border p-2 rounded" required>
+      <select
+        value={subCategoryId}
+        onChange={(e) => setSubCategoryId(e.target.value)}
+        className="w-full border p-2 rounded"
+        required
+      >
         <option value="">Select Sub-Category</option>
-        {subCategories.map(sub => <option key={sub.id} value={sub.id}>{sub.name}</option>)}
+        {subCategories.map(sub => (
+          <option key={sub.id} value={sub.id}>{sub.name}</option>
+        ))}
       </select>
 
-      <textarea value={prompt} onChange={(e) => setPrompt(e.target.value)} placeholder="Enter prompt..." rows={4} className="w-full border p-2 rounded" required />
+      <textarea
+        value={prompt}
+        onChange={(e) => setPrompt(e.target.value)}
+        placeholder="Enter prompt..."
+        rows={4}
+        className="w-full border p-2 rounded"
+        required
+      />
 
-      <button disabled={loading} type="submit" className="w-full bg-blue-600 text-white py-2 rounded">
+      <button
+        disabled={loading}
+        type="submit"
+        className="w-full bg-blue-600 text-white py-2 rounded"
+      >
         {loading ? 'Loading...' : 'Send to AI'}
       </button>
     </form>

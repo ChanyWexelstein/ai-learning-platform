@@ -12,9 +12,9 @@ export const registerUser = async (data: { name: string; phone: string; password
 export const fetchCategories = async () =>
   apiClient.get('/categories');
 
-// Fetch sub-categories for a given category
+// Updated route to match backend
 export const fetchSubCategories = async (categoryId: string) =>
-  apiClient.get(`/subCategories/byCategory/${categoryId}`);
+  apiClient.get(`/sub-categories/byCategory/${categoryId}`);
 
 // Submit a prompt and get AI-generated response
 export const submitPrompt = async (data: {
@@ -28,7 +28,7 @@ export const submitPrompt = async (data: {
 
 // Get prompt history for a specific user
 export const fetchUserPrompts = async (userId: string) =>
-  apiClient.get(`/prompts/byUser/${userId}`);
+  apiClient.get(`/prompts/user/${userId}`);
 
 // Get all users (for admin)
 export const fetchAllUsers = async () =>

@@ -4,9 +4,9 @@ export const getAllSubCategories = () => {
   return prisma.subCategory.findMany();
 };
 
-export const getSubCategoriesByCategory = (categoryId: number) => {
+export const getSubCategoriesByCategory = async (categoryId: number) => {
   return prisma.subCategory.findMany({
-    where: { categoryId }
+    where: { categoryId },
   });
 };
 

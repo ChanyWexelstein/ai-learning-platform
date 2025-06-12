@@ -91,9 +91,21 @@ const swaggerDocument = {
       }
     },
     '/api/users/{id}': {
-      get: { summary: 'Get user by ID', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }], responses: { '200': { description: 'User data' } } },
-      put: { summary: 'Update user', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }], responses: { '200': { description: 'Updated' } } },
-      delete: { summary: 'Delete user', parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }], responses: { '204': { description: 'Deleted' } } }
+      get: {
+        summary: 'Get user by ID',
+        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
+        responses: { '200': { description: 'User data' } }
+      },
+      put: {
+        summary: 'Update user',
+        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
+        responses: { '200': { description: 'Updated' } }
+      },
+      delete: {
+        summary: 'Delete user',
+        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
+        responses: { '204': { description: 'Deleted' } }
+      }
     },
 
     // Categories
@@ -138,6 +150,41 @@ const swaggerDocument = {
           }
         },
         responses: { '201': { description: 'Sub-category created' } }
+      }
+    },
+
+    '/api/sub-categories/byCategory/{categoryId}': {
+      get: {
+        tags: ['SubCategory'],
+        summary: 'Get sub-categories by category ID',
+        parameters: [
+          {
+            name: 'categoryId',
+            in: 'path',
+            required: true,
+            schema: { type: 'string' }
+          }
+        ],
+        responses: {
+          '200': {
+            description: 'List of sub-categories',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'array',
+                  items: {
+                    type: 'object',
+                    properties: {
+                      id: { type: 'number' },
+                      name: { type: 'string' },
+                      categoryId: { type: 'number' }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
 
