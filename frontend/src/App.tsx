@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
+import Layout from './components/Layout';
 
 function App() {
   return (
@@ -16,7 +17,9 @@ function App() {
           path="/dashboard"
           element={
             <ProtectedRoute>
-              <Dashboard />
+              <Layout>
+                <Dashboard />
+              </Layout>
             </ProtectedRoute>
           }
         />
@@ -25,7 +28,9 @@ function App() {
           path="/admin"
           element={
             <ProtectedRoute requiredRole="ADMIN">
-              <AdminDashboard />
+              <Layout>
+                <AdminDashboard />
+              </Layout>
             </ProtectedRoute>
           }
         />

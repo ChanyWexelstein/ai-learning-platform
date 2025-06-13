@@ -1,7 +1,7 @@
-import PromptForm from '../components/PromptForm';
-import HistoryList from '../components/HistoryList';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import PromptForm from '../components/PromptForm';
+import HistoryList from '../components/HistoryList';
 
 function Dashboard() {
   const [response, setResponse] = useState('');
@@ -13,7 +13,7 @@ function Dashboard() {
   };
 
   return (
-    <div className="max-w-xl mx-auto mt-10 space-y-6">
+    <div className="mt-10 space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Learning Dashboard</h1>
         <button
