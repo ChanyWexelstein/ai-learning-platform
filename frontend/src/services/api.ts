@@ -55,8 +55,8 @@ export const submitPrompt = async (data: {
   return apiClient.post('/prompts', data);
 };
 
-export const fetchUserPrompts = async (userId: string) =>
-  apiClient.get(`/prompts/user/${userId}`);
+export const fetchAllUsers = async () =>
+  apiClient.get('/users');
 
-export const fetchAllUsersWithPrompts = async () =>
-  apiClient.get('/admin/users');
+export const fetchUserPrompts = async (userId: string) =>
+  apiClient.get(`/users/${userId}/prompts`);

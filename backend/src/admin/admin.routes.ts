@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import { authenticate, requireAdmin } from '../middlewares/auth.middleware';
-import { getAllUsersWithPrompts } from '../users/user.controller';
+import { getAllUsers } from '../users/user.controller';
 
 const router = Router();
 
-router.get('/users', authenticate, requireAdmin, getAllUsersWithPrompts);
+router.get('/users', authenticate, requireAdmin, getAllUsers);
 
 export default router;

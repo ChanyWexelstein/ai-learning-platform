@@ -99,10 +99,21 @@ export const deleteUser = asyncHandler(async (req: Request, res: Response) => {
   return res.status(204).send();
 });
 
-export const getAllUsersWithPrompts = asyncHandler(async (_req: Request, res: Response) => {
-  const users = await prisma.user.findMany({
-    include: { prompts: true },
+export const getPromptsByUserId = asyncHandler(async (req: Request, res: Response) => {
+  const id = req.params.id;
+  if (!id) return res.status(400).json({ error: 'Missing ID param' });
+
+  const userId = parseInt(id);
+  if (isNaN(userId)) return res.status(400).json({ error: 'Invalid ID param' });
+
+  const prompts = await prisma.prompt.findMany({
+    where: { user_id: userId },
+    orderBy: { created_at: 'desc' },
+    include: {
+      category: true,
+      sub_category: true,
+    },
   });
 
-  return res.json(users);
+  return res.json(prompts);
 });
