@@ -1,24 +1,54 @@
 import prisma from '../config/db';
 
 export const createUser = async (name: string, phone: string, password: string) => {
-  return prisma.user.create({ data: { name, phone, password } });
+  if (!name || !phone || !password) {
+    throw new Error('Missing required user fields');
+  }
+
+  try {
+    return await prisma.user.create({ data: { name, phone, password } });
+  } catch (err) {
+    throw new Error('Failed to create user');
+  }
 };
 
 export const updateUser = async (id: number, name: string, phone: string) => {
-  return prisma.user.update({
-    where: { id },
-    data: { name, phone },
-  });
+  try {
+    const existing = await prisma.user.findUnique({ where: { id } });
+    if (!existing) return null;
+
+    return await prisma.user.update({
+      where: { id },
+      data: { name, phone },
+    });
+  } catch (err) {
+    throw new Error('Failed to update user');
+  }
 };
 
 export const deleteUser = async (id: number) => {
-  return prisma.user.delete({ where: { id } });
+  try {
+    const existing = await prisma.user.findUnique({ where: { id } });
+    if (!existing) return null;
+
+    return await prisma.user.delete({ where: { id } });
+  } catch (err) {
+    throw new Error('Failed to delete user');
+  }
 };
 
 export const getAllUsers = async () => {
-  return prisma.user.findMany();
+  try {
+    return await prisma.user.findMany();
+  } catch (err) {
+    throw new Error('Failed to fetch users');
+  }
 };
 
 export const getUserById = async (id: number) => {
-  return prisma.user.findUnique({ where: { id } });
+  try {
+    return await prisma.user.findUnique({ where: { id } });
+  } catch (err) {
+    throw new Error('Failed to fetch user');
+  }
 };

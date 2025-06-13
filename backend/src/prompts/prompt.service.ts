@@ -3,14 +3,20 @@ import { getCategoryById } from '../categories/category.service';
 import { getSubCategoryById } from '../subCategories/subCategory.service';
 import { askOpenAI } from './openai.service';
 
-export const getAllPrompts = () => {
-  return prisma.prompt.findMany();
+export const getAllPrompts = async () => {
+  try {
+    return await prisma.prompt.findMany();
+  } catch (err) {
+    throw new Error('Failed to fetch prompts');
+  }
 };
 
-export const getPromptsByUser = (userId: number) => {
-  return prisma.prompt.findMany({
-    where: { userId }
-  });
+export const getPromptsByUser = async (userId: number) => {
+  try {
+    return await prisma.prompt.findMany({ where: { userId } });
+  } catch (err) {
+    throw new Error('Failed to fetch prompts for user');
+  }
 };
 
 export const runPrompt = async (
@@ -19,25 +25,27 @@ export const runPrompt = async (
   subCategoryId: number,
   description: string,
 ) => {
-  const category = await getCategoryById(categoryId);
-  if(!category){
-    console.log('category is null');
-    return;
-  }
+  try {
+    const category = await getCategoryById(categoryId);
+    if (!category) throw new Error('Category not found');
 
-  const subCategory = await getSubCategoryById(subCategoryId);
-  if(!subCategory){
-    console.log('subCategory is null');
-    return;
+    const subCategory = await getSubCategoryById(subCategoryId);
+    if (!subCategory) throw new Error('SubCategory not found');
+
+    const response = await askOpenAI(
+      `Give me a lesson on category: ${category.name} and on sub category: ${subCategory.name} with the description: ${description}`
+    );
+
+    return await prisma.prompt.create({
+      data: {
+        userId,
+        categoryId,
+        subCategoryId,
+        prompt: description,
+        response,
+      },
+    });
+  } catch (err) {
+    throw new Error('Failed to run prompt: ' + (err as Error).message);
   }
-  const response = await askOpenAI(`Give me a lesson on category: ${category.name} and on sub category: ${subCategory.name} with the description: ${description}`);
-  return prisma.prompt.create({
-    data: {
-      userId,
-      categoryId,
-      subCategoryId,
-      prompt: description,
-      response
-    }
-  });
 };

@@ -7,8 +7,10 @@ import {
 
 const router = express.Router();
 
-router.get('/', getAllPrompts);
+router.route('/')
+  .get(getAllPrompts)
+  .post(createPrompt);
+
 router.get('/user/:userId', getPromptsByUser);
-router.post('/', createPrompt);
 
 export default router;

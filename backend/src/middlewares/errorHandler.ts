@@ -1,21 +1,18 @@
 import { Request, Response, NextFunction } from 'express';
 
-/**
- * Middleware לניתוב שגיאות כלליות באפליקציה.
- */
 export const errorHandler = (
-  err: Error,
+  err: Error & { statusCode?: number },
   _req: Request,
   res: Response,
   _next: NextFunction
 ) => {
-  console.error('Error:', err.message);
-  res.status(500).json({ error: err.message || 'Something went wrong' });
+  const status = err.statusCode || 500;
+  const message = err.message || 'Something went wrong';
+
+  console.error(`[Error ${status}] ${message}`);
+  res.status(status).json({ error: message });
 };
 
-/**
- * עטיפה לפונקציות אסינכרוניות שמעבירה שגיאות ל־errorHandler אוטומטית.
- */
 export const asyncHandler = (
   fn: (req: Request, res: Response, next: NextFunction) => Promise<any>
 ) => {

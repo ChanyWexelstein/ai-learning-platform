@@ -7,8 +7,10 @@ import {
 
 const router = Router();
 
-router.get('/', getAllSubCategories);
-router.post('/', createSubCategory);
+router.route('/')
+  .get(getAllSubCategories)
+  .post(createSubCategory);
+
 router.get('/byCategory/:categoryId', getSubCategoriesByCategory);
 
 
