@@ -1,4 +1,5 @@
 import prisma from '../config/db';
+import bcrypt from 'bcrypt';
 
 export const createUser = async (name: string, phone: string, password: string) => {
   if (!name || !phone || !password) {
@@ -6,7 +7,15 @@ export const createUser = async (name: string, phone: string, password: string) 
   }
 
   try {
-    return await prisma.user.create({ data: { name, phone, password } });
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    return await prisma.user.create({
+      data: {
+        name,
+        phone,
+        password: hashedPassword,
+      },
+    });
   } catch (err) {
     throw new Error('Failed to create user');
   }

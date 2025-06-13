@@ -21,16 +21,19 @@ function PromptForm({ onResponse }: { onResponse: (res: string) => void }) {
   const [subCategoryId, setSubCategoryId] = useState('');
   const [prompt, setPrompt] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchCategories().then(res => setCategories(res.data));
+    fetchCategories().then(res => setCategories(res.data)).catch(() => {
+      setError('Failed to load categories.');
+    });
   }, []);
 
   useEffect(() => {
     if (categoryId) {
-      fetchSubCategories(categoryId).then(res => {
-        setSubCategories(res.data);
-      });
+      fetchSubCategories(categoryId)
+        .then(res => setSubCategories(res.data))
+        .catch(() => setError('Failed to load sub-categories.'));
     } else {
       setSubCategories([]);
     }
@@ -39,14 +42,20 @@ function PromptForm({ onResponse }: { onResponse: (res: string) => void }) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userId) return;
+    if (!prompt.trim()) {
+      setError('Prompt cannot be empty.');
+      return;
+    }
 
     setLoading(true);
+    setError(null);
+
     try {
       const res = await submitPrompt({
         userId: userId.toString(),
         categoryId,
         subCategoryId,
-        prompt
+        prompt: prompt.trim()
       });
 
       setPrompt('');
@@ -56,6 +65,7 @@ function PromptForm({ onResponse }: { onResponse: (res: string) => void }) {
       onResponse(res.data.response);
     } catch (err) {
       console.error(err);
+      setError('An error occurred while sending the prompt.');
       onResponse('Error occurred.');
     } finally {
       setLoading(false);
@@ -64,6 +74,8 @@ function PromptForm({ onResponse }: { onResponse: (res: string) => void }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      {error && <div className="text-red-600 text-sm">{error}</div>}
+
       <select
         value={categoryId}
         onChange={(e) => setCategoryId(e.target.value)}
@@ -81,6 +93,7 @@ function PromptForm({ onResponse }: { onResponse: (res: string) => void }) {
         onChange={(e) => setSubCategoryId(e.target.value)}
         className="w-full border p-2 rounded"
         required
+        disabled={!categoryId}
       >
         <option value="">Select Sub-Category</option>
         {subCategories.map(sub => (

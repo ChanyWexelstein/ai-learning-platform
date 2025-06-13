@@ -13,7 +13,23 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
     throw new Error('Missing name, phone or password');
   }
 
-  const user = await authService.register(name, phone, password);
+  if (typeof name !== 'string' || name.trim().length < 2 || name.trim().length > 30) {
+    res.status(400);
+    throw new Error('Name must be between 2 and 30 characters');
+  }
+
+  const phoneRegex = /^05\d{8}$/;
+  if (!phoneRegex.test(phone)) {
+    res.status(400);
+    throw new Error('Phone must be a valid Israeli number (e.g., 0501234567)');
+  }
+
+  if (typeof password !== 'string' || password.length < 6) {
+    res.status(400);
+    throw new Error('Password must be at least 6 characters');
+  }
+
+  const user = await authService.register(name.trim(), phone, password);
   res.status(201).json(user);
 });
 
