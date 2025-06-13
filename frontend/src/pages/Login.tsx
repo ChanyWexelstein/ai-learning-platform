@@ -11,9 +11,17 @@ function Login() {
     e.preventDefault();
     try {
       const res = await loginUser({ name, password });
-      const user = res.data;
-      localStorage.setItem('user', JSON.stringify(user));
-      navigate('/dashboard');
+      const token = res.data.token;
+      localStorage.setItem('token', token);
+
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const role = payload.role;
+
+      if (role === 'ADMIN') {
+        navigate('/admin');
+      } else {
+        navigate('/dashboard');
+      }
     } catch (error) {
       alert('Login failed');
       console.error(error);

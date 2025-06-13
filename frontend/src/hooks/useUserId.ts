@@ -1,9 +1,10 @@
 export function useUserId(): string | undefined {
-  const stored = localStorage.getItem('user');
-  if (!stored) return undefined;
+  const token = localStorage.getItem('token');
+  if (!token) return undefined;
+
   try {
-    const user = JSON.parse(stored);
-    return user?.id;
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return String(payload.id); 
   } catch {
     return undefined;
   }

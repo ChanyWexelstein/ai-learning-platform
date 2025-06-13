@@ -1,41 +1,45 @@
 import { useEffect, useState } from 'react';
 import { fetchUserPrompts } from '../services/api';
-import { useUserId } from '../hooks/useUserId'; 
+import { useUser } from '../hooks/useUser';
 
-interface PromptEntry {
-  id: string;
+interface Prompt {
+  id: number;
   prompt: string;
   response: string;
-  created_at: string;
+  createdAt: string;
 }
 
-function HistoryList({ userId }: { userId?: string }) {
-  const userIdFromHook = useUserId();
-  const finalUserId = userId || userIdFromHook;
-
-  const [history, setHistory] = useState<PromptEntry[]>([]);
+function HistoryList() {
+  const user = useUser();
+  const [prompts, setPrompts] = useState<Prompt[]>([]);
 
   useEffect(() => {
-    if (!finalUserId) return;
-    fetchUserPrompts(finalUserId).then((res) => setHistory(res.data));
-  }, [finalUserId]);
+    if (!user?.id) return;
+    fetchUserPrompts(user.id.toString())
+      .then(res => setPrompts(res.data))
+      .catch(err => console.error('Failed to fetch prompts', err));
+  }, [user]);
 
-  if (!history.length) return null;
+  if (!user?.id) return null;
 
   return (
-    <div className="mt-10 max-w-3xl mx-auto">
-      <h2 className="text-xl font-bold mb-4">Your Learning History</h2>
-      <ul className="space-y-4">
-        {history.map((item) => (
-          <li key={item.id} className="p-4 border rounded bg-white shadow-sm">
-            <p className="font-medium text-gray-700">Prompt: {item.prompt}</p>
-            <p className="mt-2 text-gray-900">Response: {item.response}</p>
-            <p className="mt-2 text-sm text-gray-500">
-              {new Date(item.created_at).toLocaleString()}
-            </p>
-          </li>
-        ))}
-      </ul>
+    <div className="mt-6">
+      <h2 className="text-lg font-semibold mb-2">Your History</h2>
+      {prompts.length === 0 ? (
+        <p className="text-sm text-gray-500">No history yet.</p>
+      ) : (
+        <ul className="space-y-2">
+          {prompts.map(p => (
+            <li key={p.id} className="border p-3 rounded bg-gray-50">
+              <p><strong>Prompt:</strong> {p.prompt}</p>
+              <p><strong>Response:</strong> {p.response}</p>
+              <p className="text-sm text-gray-500">
+                {new Date(p.createdAt).toLocaleString()}
+              </p>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

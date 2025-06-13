@@ -29,7 +29,6 @@ function PromptForm({ onResponse }: { onResponse: (res: string) => void }) {
   useEffect(() => {
     if (categoryId) {
       fetchSubCategories(categoryId).then(res => {
-        console.log('Fetched subCategories:', res.data); // ✅ לבדיקה
         setSubCategories(res.data);
       });
     } else {
@@ -40,17 +39,23 @@ function PromptForm({ onResponse }: { onResponse: (res: string) => void }) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!userId) return;
+
     setLoading(true);
     try {
       const res = await submitPrompt({
-        userId,
+        userId: userId.toString(),
         categoryId,
         subCategoryId,
         prompt
       });
-      onResponse(res.data.response);
+
       setPrompt('');
-    } catch {
+      setCategoryId('');
+      setSubCategoryId('');
+      setSubCategories([]);
+      onResponse(res.data.response);
+    } catch (err) {
+      console.error(err);
       onResponse('Error occurred.');
     } finally {
       setLoading(false);
