@@ -35,7 +35,7 @@ async function main() {
     }
   });
 
-  console.log('✅ Seed data inserted');
+  console.log('Seed data inserted');
 }
 
 main()

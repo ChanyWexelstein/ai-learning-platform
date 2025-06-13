@@ -107,7 +107,7 @@ export const getPromptsByUserId = asyncHandler(async (req: Request, res: Respons
   if (isNaN(userId)) return res.status(400).json({ error: 'Invalid ID param' });
 
   const prompts = await prisma.prompt.findMany({
-    where: { user_id: userId },
+    where: { userId }, 
     orderBy: { created_at: 'desc' },
     include: {
       category: true,

@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   postgres:
     image: postgres:15
@@ -27,7 +29,7 @@ services:
       - ./backend/.env
     volumes:
       - ./backend:/app
-    command: sh -c "npx prisma migrate deploy && npx prisma db seed && npm run dev"
+    command: sh -c "npx prisma migrate deploy && npx tsx prisma/safe-seed.ts && npm run dev"
 
 volumes:
   pgdata:
