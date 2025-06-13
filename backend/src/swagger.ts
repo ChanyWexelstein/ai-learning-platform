@@ -26,6 +26,7 @@ const swaggerDocument = {
   paths: {
     '/api/auth/register': {
       post: {
+        tags: ['Auth'],
         summary: 'Register a new user',
         requestBody: {
           required: true,
@@ -51,6 +52,7 @@ const swaggerDocument = {
     },
     '/api/auth/login': {
       post: {
+        tags: ['Auth'],
         summary: 'Login a user',
         requestBody: {
           required: true,
@@ -75,12 +77,9 @@ const swaggerDocument = {
     },
     '/api/admin/users': {
       get: {
+        tags: ['Admin'],
         summary: 'Get all users (ADMIN only)',
-        security: [
-          {
-            bearerAuth: []
-          }
-        ],
+        security: [{ bearerAuth: [] }],
         responses: {
           '200': {
             description: 'List of all users with prompts',
@@ -117,48 +116,34 @@ const swaggerDocument = {
       }
     },
     '/api/users': {
-      get: { summary: 'Get all users', responses: { '200': { description: 'Success' } } },
-      post: {
-        summary: 'Create new user',
-        requestBody: {
-          required: true,
-          content: {
-            'application/json': {
-              schema: {
-                type: 'object',
-                properties: {
-                  name: { type: 'string' },
-                  phone: { type: 'string' },
-                  password: { type: 'string' }
-                },
-                required: ['name', 'phone', 'password']
-              }
-            }
-          }
-        },
-        responses: { '201': { description: 'User created' } }
+      get: {
+        tags: ['Users'],
+        summary: 'Get all users',
+        responses: { '200': { description: 'Success' } }
       }
     },
     '/api/users/{id}': {
       get: {
+        tags: ['Users'],
         summary: 'Get user by ID',
         parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
         responses: { '200': { description: 'User data' } }
       },
       put: {
+        tags: ['Users'],
         summary: 'Update user',
         parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
         responses: { '200': { description: 'Updated' } }
-      },
-      delete: {
-        summary: 'Delete user',
-        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
-        responses: { '204': { description: 'Deleted' } }
       }
     },
     '/api/categories': {
-      get: { summary: 'Get all categories', responses: { '200': { description: 'Success' } } },
+      get: {
+        tags: ['Categories'],
+        summary: 'Get all categories',
+        responses: { '200': { description: 'Success' } }
+      },
       post: {
+        tags: ['Categories'],
         summary: 'Create new category',
         requestBody: {
           required: true,
@@ -176,8 +161,13 @@ const swaggerDocument = {
       }
     },
     '/api/sub-categories': {
-      get: { summary: 'Get all sub-categories', responses: { '200': { description: 'Success' } } },
+      get: {
+        tags: ['SubCategories'],
+        summary: 'Get all sub-categories',
+        responses: { '200': { description: 'Success' } }
+      },
       post: {
+        tags: ['SubCategories'],
         summary: 'Create new sub-category',
         requestBody: {
           required: true,
@@ -199,7 +189,7 @@ const swaggerDocument = {
     },
     '/api/sub-categories/byCategory/{categoryId}': {
       get: {
-        tags: ['SubCategory'],
+        tags: ['SubCategories'],
         summary: 'Get sub-categories by category ID',
         parameters: [
           {
@@ -232,8 +222,13 @@ const swaggerDocument = {
       }
     },
     '/api/prompts': {
-      get: { summary: 'Get all prompts', responses: { '200': { description: 'Success' } } },
+      get: {
+        tags: ['Prompts'],
+        summary: 'Get all prompts',
+        responses: { '200': { description: 'Success' } }
+      },
       post: {
+        tags: ['Prompts'],
         summary: 'Create a new prompt',
         requestBody: {
           required: true,
@@ -256,6 +251,7 @@ const swaggerDocument = {
     },
     '/api/prompts/user/{userId}': {
       get: {
+        tags: ['Prompts'],
         summary: 'Get prompts by user ID',
         parameters: [
           {

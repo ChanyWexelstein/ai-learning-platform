@@ -1,14 +1,18 @@
-export function useUser() {
-  const token = localStorage.getItem('token');
-  if (!token) return null;
+import { useMemo } from 'react';
 
-  try {
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    return {
-      id: payload.id,
-      role: payload.role,
-    };
-  } catch {
-    return null;
-  }
+export function useUser() {
+  return useMemo(() => {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return {
+        id: payload.id,
+        role: payload.role,
+      };
+    } catch {
+      return null;
+    }
+  }, []);
 }

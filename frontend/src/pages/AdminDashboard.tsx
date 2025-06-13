@@ -5,9 +5,9 @@ interface Prompt {
   id: string;
   prompt: string;
   response: string;
-  created_at: string;
+  createdAt: string;
   category?: { name: string };
-  sub_category?: { name: string };
+  subCategory?: { name: string };
 }
 
 interface User {
@@ -71,11 +71,16 @@ function AdminDashboard() {
                     {prompts.map(p => (
                       <li key={p.id} className="border p-3 rounded bg-gray-50">
                         <p><strong>Category:</strong> {p.category?.name || '-'}</p>
-                        <p><strong>Sub-Category:</strong> {p.sub_category?.name || '-'}</p>
+                        <p><strong>Sub-Category:</strong> {p.subCategory?.name || '-'}</p>
                         <p><strong>Prompt:</strong> {p.prompt}</p>
                         <p><strong>Response:</strong> {p.response}</p>
                         <p className="text-sm text-gray-500">
-                          {new Date(p.created_at).toLocaleString()}
+                          {p.createdAt && !isNaN(new Date(p.createdAt).getTime())
+                            ? new Date(p.createdAt).toLocaleString('he-IL', {
+                                dateStyle: 'medium',
+                                timeStyle: 'short'
+                              })
+                            : 'Invalid Date'}
                         </p>
                       </li>
                     ))}

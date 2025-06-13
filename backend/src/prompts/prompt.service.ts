@@ -5,7 +5,13 @@ import { askOpenAI } from './openai.service';
 
 export const getAllPrompts = async () => {
   try {
-    return await prisma.prompt.findMany();
+    return await prisma.prompt.findMany({
+      orderBy: { createdAt: 'desc' },
+      include: {
+        category: true,
+        subCategory: true,
+      },
+    });
   } catch (err) {
     throw new Error('Failed to fetch prompts');
   }
@@ -13,9 +19,30 @@ export const getAllPrompts = async () => {
 
 export const getPromptsByUser = async (userId: number) => {
   try {
-    return await prisma.prompt.findMany({ where: { userId } });
+    return await prisma.prompt.findMany({
+      where: { userId },
+      orderBy: { createdAt: 'desc' },
+      include: {
+        category: true,
+        subCategory: true,
+      },
+    });
   } catch (err) {
     throw new Error('Failed to fetch prompts for user');
+  }
+};
+
+export const getPromptById = async (id: number) => {
+  try {
+    return await prisma.prompt.findUnique({
+      where: { id },
+      include: {
+        category: true,
+        subCategory: true,
+      },
+    });
+  } catch (err) {
+    throw new Error('Failed to fetch prompt');
   }
 };
 
@@ -23,7 +50,7 @@ export const runPrompt = async (
   userId: number,
   categoryId: number,
   subCategoryId: number,
-  description: string,
+  description: string
 ) => {
   try {
     const category = await getCategoryById(categoryId);

@@ -21,31 +21,6 @@ export const createUser = async (name: string, phone: string, password: string) 
   }
 };
 
-export const updateUser = async (id: number, name: string, phone: string) => {
-  try {
-    const existing = await prisma.user.findUnique({ where: { id } });
-    if (!existing) return null;
-
-    return await prisma.user.update({
-      where: { id },
-      data: { name, phone },
-    });
-  } catch (err) {
-    throw new Error('Failed to update user');
-  }
-};
-
-export const deleteUser = async (id: number) => {
-  try {
-    const existing = await prisma.user.findUnique({ where: { id } });
-    if (!existing) return null;
-
-    return await prisma.user.delete({ where: { id } });
-  } catch (err) {
-    throw new Error('Failed to delete user');
-  }
-};
-
 export const getAllUsers = async () => {
   try {
     return await prisma.user.findMany();

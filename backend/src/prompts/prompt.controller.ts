@@ -33,6 +33,27 @@ export const getPromptsByUser = async (
   }
 };
 
+export const getPromptById = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { id } = req.params;
+    if (!id) return res.status(400).json({ error: 'Missing prompt ID param' });
+
+    const promptId = parseInt(id);
+    if (isNaN(promptId)) return res.status(400).json({ error: 'Invalid prompt ID' });
+
+    const prompt = await promptService.getPromptById(promptId);
+    if (!prompt) return res.status(404).json({ error: 'Prompt not found' });
+
+    return res.json(prompt);
+  } catch (err) {
+    return next(err);
+  }
+};
+
 export const createPrompt = async (
   req: Request,
   res: Response,
