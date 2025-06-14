@@ -1,6 +1,6 @@
 # AI Learning Platform - Mini MVP
 
-[GitHub Repository](https://github.com/your-username/ai-learning-platform)
+[GitHub Repository](https://github.com/ChanyWexelstein/ai-learning-platform)
 
 This repository contains a full-stack implementation of a mini AI-driven learning platform. The platform allows users to register, choose a learning topic by category and sub-category, submit a prompt to an AI engine, and receive a generated lesson. The platform also includes an admin dashboard for managing users and reviewing their learning history.
 
@@ -30,11 +30,8 @@ The system is composed of a TypeScript-based Node.js backend with PostgreSQL and
 
 - Viewing all registered users
 - Viewing prompts submitted by each user
-- Tracking learning progress across users
 
 ## Project Structure
-
-The project is organized as follows:
 
 ```
 ai-learning-platform/
@@ -62,7 +59,6 @@ ai-learning-platform/
 ├── docker-compose.yml
 ├── package.json
 └── README.md
-
 ```
 
 ## Setup Instructions
@@ -127,11 +123,20 @@ API routes are documented using Swagger and available at:
 http://localhost:3000/api-docs
 ```
 
+## Admin Access
+
+To access the admin dashboard, log in with the following credentials:
+
+- **Username:** `admin`
+- **Password:** `123456.`
+
+> The admin user is created during development using a manual database seed.
+
 ## Assumptions and Notes
 
 - User authentication is implemented using JWT.
-- Currently, no automated unit or integration tests are included; test coverage can be added in future iterations.
-- Tests can be run locally using `npm test` if added.
+- The default admin user (`admin / 123456.`) is seeded manually into the database.
+- No automated unit or integration tests are included; test coverage can be added in future iterations.
 - The application currently does not include pagination or filtering features.
 - The prompt-to-lesson interaction is based on real-time communication with the OpenAI API.
 

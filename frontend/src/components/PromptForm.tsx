@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { fetchCategories, fetchSubCategories, submitPrompt } from '../services/api';
-import { useUserId } from '../hooks/useUserId';
+import { useUserId } from '../hooks/useUser';
 
 interface Category {
   id: string;
@@ -33,7 +33,7 @@ function PromptForm({ onResponse }: { onResponse: (res: string) => void }) {
     if (categoryId) {
       fetchSubCategories(categoryId)
         .then(res => setSubCategories(res.data))
-        .catch(() => setError('Failed to load sub-categories.'));
+        .catch(() => setError('Failed to load sub categories.'));
     } else {
       setSubCategories([]);
     }
@@ -82,7 +82,7 @@ function PromptForm({ onResponse }: { onResponse: (res: string) => void }) {
         className="w-full border p-2 rounded"
         required
       >
-        <option value="">Select Category</option>
+        <option value="">select category</option>
         {categories.map(cat => (
           <option key={cat.id} value={cat.id}>{cat.name}</option>
         ))}
@@ -95,7 +95,7 @@ function PromptForm({ onResponse }: { onResponse: (res: string) => void }) {
         required
         disabled={!categoryId}
       >
-        <option value="">Select Sub-Category</option>
+        <option value="">Select sub category</option>
         {subCategories.map(sub => (
           <option key={sub.id} value={sub.id}>{sub.name}</option>
         ))}

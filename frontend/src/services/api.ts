@@ -59,4 +59,4 @@ export const fetchAllUsers = async () =>
   apiClient.get('/users');
 
 export const fetchUserPrompts = async (userId: string) =>
-  apiClient.get(`/users/${userId}/prompts`);
+  apiClient.get(`/prompts/user/${userId}`);

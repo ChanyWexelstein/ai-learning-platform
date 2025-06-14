@@ -5,10 +5,13 @@ import { loginUser } from '../services/api';
 function Login() {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMsg('');
+
     try {
       const res = await loginUser({ name, password });
       const token = res.data.token;
@@ -22,14 +25,19 @@ function Login() {
       } else {
         navigate('/dashboard');
       }
-    } catch (error) {
-      alert('Login failed');
-      console.error(error);
+    } catch (error: any) {
+      const msg = error.response?.data?.error || 'Login failed. Please try again.';
+      setErrorMsg(msg);
     }
   };
 
   return (
     <form onSubmit={handleLogin} className="max-w-md mx-auto mt-10 space-y-4">
+      {errorMsg && (
+        <div className="bg-red-100 text-red-700 border border-red-300 px-4 py-2 rounded text-sm text-center">
+          {errorMsg}
+        </div>
+      )}
       <input
         type="text"
         placeholder="Name"
@@ -63,3 +71,5 @@ function Login() {
 }
 
 export default Login;
+
+

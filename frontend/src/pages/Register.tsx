@@ -37,18 +37,22 @@ function Register() {
 
     try {
       const res = await registerUser({ name, phone, password });
-      const user = res.data;
-      localStorage.setItem('user', JSON.stringify(user));
+      const token = res.data.token;
+      localStorage.setItem('token', token);
       navigate('/dashboard');
     } catch (error: any) {
-      const message = error?.response?.data?.error || 'Registration failed';
+      const message = error?.response?.data?.error || 'Registration failed. Please try again.';
       setServerError(message);
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-10 space-y-4">
-      {serverError && <p className="text-red-600 text-sm text-center">{serverError}</p>}
+      {serverError && (
+        <div className="bg-red-100 text-red-700 border border-red-300 px-4 py-2 rounded text-sm text-center">
+          {serverError}
+        </div>
+      )}
 
       <div>
         <input
